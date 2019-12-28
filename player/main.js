@@ -162,7 +162,8 @@ function start() {
         // runs after the audio node is created
         function(newNode) {
             audioNode = newNode;
-            content.innerText = '下载曲子中...';
+            var song_name = decodeURIComponent(getQueryString("name"));
+            content.innerText = '下载曲子"'+song_name +'"...';
 
             // downloading the music
             let request = new XMLHttpRequest();
@@ -178,7 +179,7 @@ function start() {
                if (evt.lengthComputable) 
                {  
                  var percentComplete = (evt.loaded / evt.total) * 100;  
-                 content.innerText = '下载曲子中...'+Math.round(percentComplete)+'%';
+                 content.innerText = '下载曲子"'+song_name +'"...'+Math.round(percentComplete)+'%';
                  //$('#progressbar').progressbar( "option", "value", percentComplete );
                } 
             } 
