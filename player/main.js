@@ -78,7 +78,9 @@ function onAudioDecoded(buffer) {
 
     //document.getElementById("name").value php way
     // UI: innerHTML may be ugly but keeps this example small
-    var str='<center><h4>'+decodeURIComponent(getQueryString("name"))+'</h4><center>';
+    var song_name = decodeURIComponent(getQueryString("name"));
+    var str='<center><h4>'+song_name+'</h4><center>';
+    document.title = "葫芦丝："+song_name;
    
     var param_str1 = getQueryString("compose");
     var param_str2 = getQueryString("play");
@@ -135,7 +137,7 @@ function start() {
 
             // downloading the music
             let request = new XMLHttpRequest();
-            let full_path = 'https://stariver1862.github.io/hls/songs/'+getQueryString("file");
+            let full_path = 'https://player.fivepiano.com/songs/'+getQueryString("file");
 
             //request.open('GET', encodeURIComponent('test.mp3'), true);
             request.open('GET', full_path, true);
