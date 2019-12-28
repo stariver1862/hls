@@ -1,4 +1,4 @@
-import SuperpoweredModule from '../superpowered.js'
+import SuperpoweredModule from './superpowered.js'
 
 var Superpowered = null;
 
@@ -27,6 +27,7 @@ class MyProcessor extends SuperpoweredModule.AudioWorkletProcessor {
         if (typeof message.rate !== 'undefined') this.timeStretching.rate = message.rate / 10000.0;
         // changing the pitch shift?
         if (typeof message.pitchShift !== 'undefined') this.timeStretching.pitchShiftCents = message.pitchShift * 100;
+                
     }
 
     processAudio(inputBuffer, outputBuffer, buffersize, parameters) {
@@ -34,6 +35,15 @@ class MyProcessor extends SuperpoweredModule.AudioWorkletProcessor {
         if (this.posFrames == -1) { // if not, output silence
             for (let n = 0; n < buffersize * 2; n++) outputBuffer.array[n] = 0;
             return;
+        }
+
+        if ( this.posFrames%1000 == 0 )
+        {
+            this.sendMessageToMainScope({
+                message_type: "frame_pos",
+                frame_pos:   this.posFrames,
+                frame_total: this.lengthFrames
+            });    
         }
 
         // iterate until the time stretcher has at least "buffersize" amount of output available
