@@ -46,6 +46,23 @@ function togglePlayback(e) {
     } else {
         button.value = 1;
         button.innerText = '暂停';
+        
+		    var pitch_shift = getQueryString("shift");
+		    var rate = getQueryString("rate");
+		
+		    if ( pitch_shift || rate )
+		    {
+		        if ( pitch_shift != null )
+		        {
+		           audioNode.sendMessageToAudioScope({ 'pitchShift': pitch_shift });
+		        }
+		
+		        if ( rate != null )
+		        {
+		        	audioNode.sendMessageToAudioScope({ 'rate': rate }); 
+		        }                
+		    }
+        
         audioContext.resume();
     }
 }
@@ -103,12 +120,24 @@ function onAudioDecoded(buffer) {
         str += '</p></center>';
     }
 
-    param_str1 = getQueryString("pitch");
-    if( param_str1 )
-    {
-        str += '<center><p>速度：原速　　　调式：'+ param_str1 +'</p><center>';
-    }
+    var text_rate;
+    param_str2 = getQueryString("rate"); 
 
+    if (param_str2 == 10000 || param_str2 == null) text_rate = '原始速度';
+    else if (param_str2 < 10000) text_rate = '-' + (100 - param_str2 / 100).toPrecision(2) + '%';
+    else text_rate = '+' + (param_str2 / 100 - 100).toPrecision(2) + '%';
+
+    str += '<center><p>速度：'+text_rate;
+    
+    param_str1 = getQueryString("pitch"); 
+
+    if (param_str1 != null)
+    {
+        str += '　　　调式：'+ param_str1;	    
+    } 
+    
+    str += '</p><center>';
+        
     content.innerHTML = str+'\
         <div id="progress"><div style="position: relative;height:40;width:100%;border:solid 0px #EEC286;background-color:gainsboro;"><div style="position:absolute;height:40;width:0%; background-color: #EEC286;text-align:right;">0%</div></div></div>\
         <center><h1> </h1><center>\
