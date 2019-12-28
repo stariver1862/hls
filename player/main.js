@@ -163,6 +163,7 @@ function start() {
         function(newNode) {
             audioNode = newNode;
             var song_name = decodeURIComponent(getQueryString("name"));
+            if ( song_name == null ) {song_name="";};
             content.innerText = '下载曲子"'+song_name +'"...';
 
             // downloading the music
