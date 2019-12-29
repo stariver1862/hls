@@ -133,7 +133,7 @@ function onAudioDecoded(buffer) {
 
     if (param_str1 != null)
     {
-        str += '　　　调式：'+ param_str1;	    
+        str += '　　　调式：'+ decodeURI(param_str1);	    
     } 
     
     str += '</p><center>';
