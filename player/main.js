@@ -127,7 +127,7 @@ function onAudioDecoded(buffer) {
     else if (param_str2 < 10000) text_rate = '-' + (100 - param_str2 / 100).toPrecision(2) + '%';
     else text_rate = '+' + (param_str2 / 100 - 100).toPrecision(2) + '%';
 
-    str += '<center><p>速度：'+text_rate;
+    str += '<p>速度：'+text_rate;
     
     param_str1 = getQueryString("pitch"); 
 
@@ -136,7 +136,9 @@ function onAudioDecoded(buffer) {
         str += '　　　调式：'+ decodeURI(param_str1);	    
     } 
     
-    str += '</p><center>';
+    str += '</p>';
+    
+    str += ' <div class="radio-group"><input type="radio" id="option-0" name="selector" ><label for="option-0">F</label><input type="radio" id="option-one" name="selector" ><label for="option-one">G</label><input type="radio" id="option-two" name="selector"><label for="option-two">C</label><input type="radio" id="option-three" name="selector"><label for="option-three">bB</label></div>';
         
     content.innerHTML = str+'\
         <div id="progress"><div style="position: relative;height:40;width:100%;border:solid 0px #EEC286;background-color:gainsboro;"><div style="position:absolute;height:40;width:0%; background-color: #EEC286;text-align:right;">0%</div></div></div>\
