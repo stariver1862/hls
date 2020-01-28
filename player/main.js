@@ -46,25 +46,23 @@ function togglePlayback(e) {
     } else {
         button.value = 1;
         button.innerText = '暂停';
-        
-		    var pitch_shift = getQueryString("shift");
-		    var rate = getQueryString("rate");
-		
-		    if ( pitch_shift || rate )
-		    {
-		        if ( pitch_shift != null )
-		        {
-		           audioNode.sendMessageToAudioScope({ 'pitchShift': pitch_shift });
-		        }
-		
-		        if ( rate != null )
-		        {
-		        	audioNode.sendMessageToAudioScope({ 'rate': rate }); 
-		        }                
-		    }
-        
+                
         audioContext.resume();
     }
+}
+
+function toggleHLSType(e) {
+	if ( event.target && event.target.matches("input[type='radio']") ) {
+		audioNode.sendMessageToAudioScope({ 'pitchShift': e.target.value });
+	  //console.log(e.target.value);
+	}
+}
+
+function toggleSpeedOptions(e) {
+	if ( event.target && event.target.matches("input[type='radio']") ) {
+    audioNode.sendMessageToAudioScope({ rate: e.target.value });
+	  //console.log(e.target.value);
+	}
 }
 
 // we have the audio system created, let's display the UI and start playback
@@ -127,23 +125,52 @@ function onAudioDecoded(buffer) {
     else if (param_str2 < 10000) text_rate = '-' + (100 - param_str2 / 100).toPrecision(2) + '%';
     else text_rate = '+' + (param_str2 / 100 - 100).toPrecision(2) + '%';
 
-    str += '<p>速度：'+text_rate;
+    str += '<p>速度</p>' /*+text_rate*/;
+    
+    str += '<div class="radio-group" id="speedoptions"><input type="radio" value="9000" id="sp_option-1" name="speedoptions"><label for="sp_option-1">慢</label><input type="radio" value="10000" id="sp_option-2" name="speedoptions" checked><label for="sp_option-2">正常</label><input type="radio" value="11000" id="sp_option-3" name="speedoptions"><label for="sp_option-3">快</label></div>';
     
     param_str1 = getQueryString("pitch"); 
 
     if (param_str1 != null)
     {
-        str += '　　　调式：'+ decodeURI(param_str1);	    
+        str += '<p>调式：'+ decodeURI(param_str1)+'</p>';	    
     } 
     
-    str += '</p>';
     
-    str += ' <div class="radio-group"><input type="radio" id="option-0" name="selector" ><label for="option-0">F</label><input type="radio" id="option-one" name="selector" ><label for="option-one">G</label><input type="radio" id="option-two" name="selector"><label for="option-two">C</label><input type="radio" id="option-three" name="selector"><label for="option-three">bB</label></div>';
-        
+    param_str1 = getQueryString("pitchOptions"); 
+    if (param_str1 != null)
+    {
+    	  str += '<p>调式</p>';
+    	  str += '<div class="radio-group" id="hlstype">';
+        var shiftOptions = param_str1.split("z");
+        shiftOptions.forEach(shiftOptionsForEach);
+				function shiftOptionsForEach(value, index, array) {
+				  //txt = txt + value + "<br>";
+				  var pos = value.indexOf("x");
+				  if ( pos > 0 )
+				  {
+						 str += '<input type="radio" value="'+value.substring(pos+1,value.length)+'" id="option-'+index+'" name="hlstype" >'; 	
+						 str += '<label for="option-'+index+'">'+value.substr(0, pos)+'</label>';
+				  }
+				  pos = value.indexOf("X");
+				  if ( pos > 0 )
+				  {
+				  	 var shiftValue = value.substring(pos+1,value.length);
+						 str += '<input type="radio" value="'+value.substring(pos+1,value.length)+'" id="option-'+index+'" name="hlstype" checked>'; 	
+						 str += '<label for="option-'+index+'">'+value.substr(0, pos)+'</label>';
+						 audioNode.sendMessageToAudioScope({ 'pitchShift': shiftValue });
+				  }
+				  //console.log(value.substr(0, pos)+":"+value.substring(pos+1,value.length));
+				}    	
+        str += '</div>';
+    }
+    
     content.innerHTML = str+'\
-        <div id="progress"><div style="position: relative;height:40;width:100%;border:solid 0px #EEC286;background-color:gainsboro;"><div style="position:absolute;height:40;width:0%; background-color: #EEC286;text-align:right;">0%</div></div></div>\
-        <center><h1> </h1><center>\
-        <button id="playPause" class="round_btn" value="0">播放</button>\
+        <h3> </h3>\
+        <div id="progress" stype="margin:30px;"><div style="position: relative;height:40;width:100%;border:solid 0px #EEC286;background-color:gainsboro;"><div style="position:absolute;height:40;width:0%; background-color: #EEC286;text-align:right;">0%</div></div></div>\
+        <h2> </h2>\
+        <center><button id="playPause" class="round_btn" value="0">播放</button></center>\
+        <button id="playReset"  onClick="window.location.reload();" class="small_round_btn" value="0">重播</button>\
     ';
     /*
     document.getElementById('rateSlider').addEventListener('input', changeRate);
@@ -152,6 +179,8 @@ function onAudioDecoded(buffer) {
     document.getElementById('pitchPlus').addEventListener('click', changePitchShift);
     */
    document.getElementById('playPause').addEventListener('click', togglePlayback);
+   document.getElementById('speedoptions').addEventListener('click', toggleSpeedOptions);
+   document.getElementById('hlstype').addEventListener('click', toggleHLSType);   
 }
 
 // when the START button is clicked

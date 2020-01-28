@@ -89,7 +89,7 @@ box-sizing: border-box;
 button { 
 width:80%; 
 max-width:300px;  
-display:block; 
+vertical-align: middle;
 margin:20px auto; 
 border:0px solid #0c6eb3; 
 padding:10px; 
@@ -100,7 +100,6 @@ background: gainsboro; /* Old browsers */
 }
 
 .round_btn {
-  display:block;
   height: 90px;
   width: 90px;
   border-radius: 50%;
@@ -108,6 +107,9 @@ background: gainsboro; /* Old browsers */
   font-size: x-large;
   color: black;
 }
+
+.small_round_btn { height: 30px; width: 50px; border: 0px
+solid gainsboro; font-size: x-small; color: black; }
 
 
 input[type=radio] {
@@ -135,7 +137,7 @@ label + input[type=radio] + label {
 	background: #f6f6f6;
   border: solid 1px #FFFFFF;
   display: inline-block;
-  margin: 20px;
+  margin: 0px;
   border-radius: 0px;
   overflow: hidden;
 }
