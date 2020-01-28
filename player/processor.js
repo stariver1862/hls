@@ -39,6 +39,7 @@ class MyProcessor extends SuperpoweredModule.AudioWorkletProcessor {
 
         if ( this.posFrames%1000 == 0 )
         {
+        	  console.log(this.posFrames);
             this.sendMessageToMainScope({
                 message_type: "frame_pos",
                 frame_pos:   this.posFrames,

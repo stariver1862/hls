@@ -45,9 +45,14 @@ function togglePlayback(e) {
         audioContext.suspend();
     } else {
         button.value = 1;
-        button.innerText = '暂停';
-                
+        button.innerText = '暂停';       
         audioContext.resume();
+				var myVar = setInterval(myTimer, 1000);
+				
+				function myTimer() { ////don't send speed control if it's not playing, or the progress can't update
+		      audioNode.sendMessageToAudioScope({ rate: document.querySelectorAll("input[name=speedoptions]:checked")[0].value });
+				  clearTimeout(myVar);
+				}        
     }
 }
 
@@ -60,8 +65,12 @@ function toggleHLSType(e) {
 
 function toggleSpeedOptions(e) {
 	if ( event.target && event.target.matches("input[type='radio']") ) {
-    audioNode.sendMessageToAudioScope({ rate: e.target.value });
-	  //console.log(e.target.value);
+		if ( document.getElementById('playPause').value == 1 )
+		{  //don't send speed control if it's not playing, or the progress can't update
+    		audioNode.sendMessageToAudioScope({ rate: e.target.value });
+    		//console.log(e.target.value);
+    }
+    //console.log(document.querySelectorAll("input[name=speedoptions]:checked")[0].value);
 	}
 }
 
@@ -126,6 +135,7 @@ function onAudioDecoded(buffer) {
     else text_rate = '+' + (param_str2 / 100 - 100).toPrecision(2) + '%';
 
     str += '<p>速度</p>' /*+text_rate*/;
+    
     
     str += '<div class="radio-group" id="speedoptions"><input type="radio" value="9000" id="sp_option-1" name="speedoptions"><label for="sp_option-1">慢</label><input type="radio" value="10000" id="sp_option-2" name="speedoptions" checked><label for="sp_option-2">正常</label><input type="radio" value="11000" id="sp_option-3" name="speedoptions"><label for="sp_option-3">快</label></div>';
     
