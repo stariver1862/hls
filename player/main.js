@@ -47,7 +47,7 @@ function togglePlayback(e) {
         button.value = 1;
         button.innerText = '暂停';       
         audioContext.resume();
-				var myVar = setInterval(myTimer, 1000);
+				var myVar = setInterval(myTimer, 2000);
 				
 				function myTimer() { ////don't send speed control if it's not playing, or the progress can't update
 		      audioNode.sendMessageToAudioScope({ rate: document.querySelectorAll("input[name=speedoptions]:checked")[0].value });
