@@ -112,18 +112,18 @@ function onAudioDecoded(buffer) {
     if ( param_str1 || param_str2 )
     {
         str += '<center><p>';
-        if ( param_str1 != null )
+        if ( param_str1 != null && param_str1.length > 0  )
         {
             str += '作曲：';
             str += decodeURI(param_str1);
         }
 
-				if ( param_str1 != null && param_str2 != null )
+				if ( param_str1 != null && param_str1.length > 0 && param_str2 != null && param_str2.length > 0 )
 				{
 				    str += "　　　";
 				}
 				
-        if ( param_str2 != null )
+        if ( param_str2 != null && param_str2.length > 0 )
         {
             str += '演奏：';
             str += decodeURI(param_str2);
