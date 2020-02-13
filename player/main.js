@@ -164,14 +164,14 @@ function onAudioDecoded(buffer) {
 				  if ( pos > 0 )
 				  {
 						 str += '<input type="radio" value="'+value.substring(pos+1,value.length)+'" id="option-'+index+'" name="hlstype" >'; 	
-						 str += '<label for="option-'+index+'">'+value.substr(0, pos).replace("bb","bB")+'</label>';
+						 str += '<label for="option-'+index+'">'+value.substr(0, pos).replace("bb","bB").replace("a","A")+'</label>';
 				  }
 				  pos = value.indexOf("X");
 				  if ( pos > 0 )
 				  {
 				  	 var shiftValue = value.substring(pos+1,value.length);
 						 str += '<input type="radio" value="'+value.substring(pos+1,value.length)+'" id="option-'+index+'" name="hlstype" checked>'; 	
-						 str += '<label for="option-'+index+'">'+value.substr(0, pos).replace("bb","bB")+'</label>';
+						 str += '<label for="option-'+index+'">'+value.substr(0, pos).replace("bb","bB").replace("a","A")+'</label>';
 						 audioNode.sendMessageToAudioScope({ 'pitchShift': shiftValue });
 				  }
 				  //console.log(value.substr(0, pos)+":"+value.substring(pos+1,value.length));
